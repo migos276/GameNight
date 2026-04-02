@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EventStatus {
+  PLANNED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+
+  hostedEvents   Event[]        @relation("EventHost")
+  memberships    EventMember[]
+  gameProposals  GameProposal[]
+  votes          Vote[]
+  refreshTokens  RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id              String      @id @default(uuid())
+  title           String
+  description     String?
+  imageUrl        String?
+  date            DateTime
+  location        String
+  maxParticipants Int?
+  status          EventStatus @default(PLANNED)
+  hostId          String
+  winningGameId   String?
+  createdAt       DateTime    @default(now())
+
+  host        User           @relation("EventHost", fields: [hostId], references: [id])
+  members     EventMember[]
+  games       GameProposal[]
+  winningGame GameProposal?  @relation("WinningGame", fields: [winningGameId], references: [id])
+}
+
+model EventMember {
+  id       String   @id @default(uuid())
+  userId   String
+  eventId  String
+  joinedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+}
+
+model GameProposal {
+  id           String   @id @default(uuid())
+  name         String
+  proposedById String
+  eventId      String
+  createdAt    DateTime @default(now())
+
+  proposedBy   User   @relation(fields: [proposedById], references: [id])
+  event        Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  votes        Vote[]
+  wonInEvents  Event[] @relation("WinningGame")
+}
+
+model Vote {
+  id             String   @id @default(uuid())
+  userId         String
+  gameProposalId String
+  createdAt      DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameProposal GameProposal @relation(fields: [gameProposalId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, gameProposalId])
+}
