@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
 import CreateEventPage from './pages/CreateEventPage';
 import EventDetailPage from './pages/EventDetailPage';
+import EventsListPage from './pages/EventsListPage';
 import LoadingSpinner from './components/LoadingSpinner';
 
 // --- Routes Protégées & Publiques (Inchangées) ---
@@ -110,6 +111,12 @@ export const App: React.FC = () => {
             } />
             
             <Route path="/events/:id" element={<EventDetailPage />} />
+            
+            <Route path="/events" element={
+              <ProtectedRoute>
+                <EventsListPage />
+              </ProtectedRoute>
+            } />
 
             {/* Redirection automatique vers Home si URL inconnue */}
             <Route path="*" element={<Navigate to="/" replace />} />
