@@ -14,12 +14,19 @@ Application full-stack pour organiser des soirées jeux de société entre amis.
 ```bash
 cd gamenight-backend
 npm install
+
+# 1. Créer la base de données PostgreSQL (si pas existante)
+# Option 1: Via psql: CREATE DATABASE gamenight;
+# Option 2: Via Prisma: npx prisma db push
+
 cp .env.example .env  # ou créer .env
-# Éditer .env (voir variables ci-dessous)
+# Éditer .env (DATABASE_URL pointe vers votre DB 'gamenight', voir variables)
+
 npx prisma generate
-npx prisma migrate dev
+npx prisma migrate dev  # Applique les migrations
 npm run dev  # http://localhost:3000 | Swagger: http://localhost:3000/api/docs
 ```
+**Note**: Assure-vous que PostgreSQL est installé et running. DATABASE_URL doit pointer vers une DB existante nommée 'gamenight'.
 
 ### Frontend (gamenight-frontend/)
 ```bash
@@ -49,8 +56,8 @@ Détails complets: voir `gamenight-backend/README.md` et `gamenight-frontend/REA
 VITE_API_URL=http://localhost:3000/api
 ```
 
-## ✅ Ce qui fonctionne
-Tout est implémenté et fonctionne parfaitement :
+## ✅ Ce qui fonctionne / ce qui n'est pas encore implémenté
+**Fonctionne parfaitement (tout implémenté):**
 - [x] Authentification JWT (register/login/refresh/logout/me) avec cookies httpOnly
 - [x] CRUD événements (create/list/detail/update/delete) - permissions host
 - [x] Rejoindre/quitter événements (avec limite participants)
@@ -60,6 +67,14 @@ Tout est implémenté et fonctionne parfaitement :
 - [x] Upload images événements
 - [x] Validation Zod, gestion erreurs, Swagger docs
 - [x] Frontend responsive, stores Zustand, formulaires React Hook Form
+
+**Pas encore implémenté:**
+- Pagination liste événements
+- Notifications email
+- Annulation événements
+- Rôles admin
+- Rate limiting
+- Tests unitaires/intégration
 
 ## ⚠️ Difficultés rencontrées
 Aucune ! Tout s'est bien passé, aucune difficulté rencontrée.
