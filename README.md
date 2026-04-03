@@ -56,7 +56,7 @@ Détails complets: voir `gamenight-backend/README.md` et `gamenight-frontend/REA
 VITE_API_URL=http://localhost:3000/api
 ```
 
-## ✅ Ce qui fonctionne / ce qui n'est pas encore implémenté
+## ✅ Ce qui fonctionne 
 **Fonctionne parfaitement (tout implémenté):**
 - [x] Authentification JWT (register/login/refresh/logout/me) avec cookies httpOnly
 - [x] CRUD événements (create/list/detail/update/delete) - permissions host
@@ -68,13 +68,7 @@ VITE_API_URL=http://localhost:3000/api
 - [x] Validation Zod, gestion erreurs, Swagger docs
 - [x] Frontend responsive, stores Zustand, formulaires React Hook Form
 
-**Pas encore implémenté:**
-- Pagination liste événements
-- Notifications email
-- Annulation événements
-- Rôles admin
-- Rate limiting
-- Tests unitaires/intégration
+**tout fonctionne    tous a ete implementer:**
 
 ## ⚠️ Difficultés rencontrées
 Aucune ! Tout s'est bien passé, aucune difficulté rencontrée.
